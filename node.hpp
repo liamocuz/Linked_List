@@ -12,52 +12,100 @@ public:
         next = nullptr;
     }
 
-    Node(int data){
-        data = data;
+    Node(const int val){
+        data = val;
         next = nullptr;
     }
 };
 class LinkedList {
 private:
-    Node head;
+    Node* head;
+    Node* tail;
 
 public:
     LinkedList()
     {
-        head = Node();
+        head = nullptr;
+        tail = nullptr;
     }
 
-    LinkedList(int length)
+    LinkedList(const int length)
     {
-        head = Node();
-        Node* temp = &head;
+        head = new Node();
+        Node* temp = head;
         for (int i = 0; i < length; i++)
         {
-            temp->next = &Node();
+            temp->next = new Node();
             temp = temp->next;
         }
+        tail = temp;
     }
 
-    LinkedList(std::vector<int> arr)
+    LinkedList(const std::vector<int> arr)
     {
-        Node* temp = &head;
+        head = new Node(arr[0]);
+        Node* temp = head;
         int size = arr.size();
-        for (int i = 0; i < size; i++)
+        for (int i = 1; i < size; i++)
         {
-            temp = &Node(arr[i]);
+            temp->next = new Node(arr[i]);
             temp = temp->next;
         }
+        tail = temp;
     }
 
-    void printList()
+    void addToFront(const int val)
     {
-        Node* tmp = &head;
+        Node* newNode = new Node(val);
+        newNode->next = head;
+        head = newNode;
+        return;
+    }
 
-        while (tmp != nullptr)
+    void addToBack(const int val)
+    {
+        if (tail == nullptr)
         {
-            std::cout << tmp->data << ", ";
-            tmp = tmp->next;
+            std::cout << "Cannot add node to end." << std::endl;
+            return;
+        }
+
+        Node* newNode = new Node(val);
+        tail->next = newNode;
+        newNode->next = nullptr;
+        return;
+    }
+
+    void reverse()
+    {
+        Node* curr = head;
+        Node* prev = nullptr;
+        Node* trueNext = nullptr;
+        tail = head;
+
+        while (curr != nullptr)
+        {
+            trueNext = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = trueNext;
+        }
+        head = prev;
+
+        return;
+    }
+
+    void print()
+    {
+        Node* temp = head;
+
+        while (temp != nullptr)
+        {
+            temp->next == nullptr ? std::cout << temp->data : std::cout << temp->data << ", ";
+            temp = temp->next;
         }
         std::cout << std::endl;
+
+        return;
     }
 };
